@@ -1,16 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TGameSnakeCell } from '../model/game';
+import { TArrowKey } from '../model/keys';
+import { getNewHead } from '../util/game';
 
-interface GameState {
+interface IGameState {
   width: number;
   height: number;
   snake: TGameSnakeCell[];
+  lastDirection: TArrowKey;
 }
 
-const initialState: GameState = {
+const initialState: IGameState = {
   width: 16,
   height: 16,
   snake: [],
+  lastDirection: 'ArrowDown',
 };
 
 const gameSlice = createSlice({
@@ -26,13 +30,25 @@ const gameSlice = createSlice({
     setSnake: (state, action: PayloadAction<TGameSnakeCell[]>) => {
       state.snake = action.payload;
     },
+    setDiretion: (state, action: PayloadAction<TArrowKey>) => {
+      state.lastDirection = action.payload;
+    },
     addSnakeTail: (state, action: PayloadAction<TGameSnakeCell>) => {
       state.snake.push(action.payload);
     },
     moveSnake: (state) => {
       const newSnake = [...state.snake].map((c, i) => {
-        let newX = state.snake[i - 1]?.x || c.x;
-        let newY = state.snake[i - 1]?.y || c.y + 1;
+        let newX = 0;
+        let newY = 0;
+
+        if (i === 0) {
+          const newHead = getNewHead(c, state.lastDirection);
+          newX = newHead.x;
+          newY = newHead.y;
+        } else {
+          newX = state.snake[i - 1].x;
+          newY = state.snake[i - 1].y;
+        }
 
         if (newX >= state.width) {
           newX = 0;
@@ -55,5 +71,11 @@ const gameSlice = createSlice({
 });
 
 export const gameReducer = gameSlice.reducer;
-export const { setWidth, setHeight, setSnake, addSnakeTail, moveSnake } =
-  gameSlice.actions;
+export const {
+  setWidth,
+  setHeight,
+  setSnake,
+  setDiretion,
+  addSnakeTail,
+  moveSnake,
+} = gameSlice.actions;

@@ -8,8 +8,10 @@ import {
 } from '../store/seletors';
 import { TGameCell } from '../model/game';
 import { GameCell } from './GameCell';
-import { moveSnake, setSnake } from '../store/reducer';
+import { moveSnake, setDiretion, setSnake } from '../store/reducer';
 import { buildSnake } from '../util/game';
+import { ARROW_KEYS } from '../constants/keys';
+import { TArrowKey } from '../model/keys';
 
 export const GameField = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,19 @@ export const GameField = () => {
   const width = useSelector(selectGameWidth);
   const height = useSelector(selectGameHeight);
   const snake = useSelector(selectSnake);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const code = e.code as string & TArrowKey;
+      if (ARROW_KEYS.includes(code)) {
+        dispatch(setDiretion(code));
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(setSnake(buildSnake({ width, height, length: 3 })));

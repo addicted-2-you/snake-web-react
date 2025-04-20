@@ -1,5 +1,6 @@
 import { getRandomIntervalInt } from '../../shared/utils/nums';
 import { TGameCellType, TGameSnakeCell } from '../model/game';
+import { TArrowKey } from '../model/keys';
 
 export const getCellStyle = (type: TGameCellType) => {
   switch (type) {
@@ -71,4 +72,36 @@ export const buildSnake = ({
   }
 
   return result;
+};
+
+export const getNewHead = (head: TGameSnakeCell, direction: TArrowKey) => {
+  const newHead = { ...head };
+
+  switch (direction) {
+    case 'ArrowUp': {
+      newHead.y -= 1;
+      break;
+    }
+
+    case 'ArrowRight': {
+      newHead.x += 1;
+      break;
+    }
+
+    case 'ArrowDown': {
+      newHead.y += 1;
+      break;
+    }
+
+    case 'ArrowLeft': {
+      newHead.x -= 1;
+      break;
+    }
+
+    default: {
+      //
+    }
+  }
+
+  return newHead;
 };
