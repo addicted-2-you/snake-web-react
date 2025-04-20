@@ -1,4 +1,4 @@
-import { clamp, getRandomIntervalInt } from '../../shared/utils/nums';
+import { getRandomIntervalInt } from '../../shared/utils/nums';
 import { TGameCellType, TGameSnakeCell } from '../model/game';
 
 export const getCellStyle = (type: TGameCellType) => {
@@ -40,11 +40,32 @@ export const buildSnake = ({
     type: 'snakeHead',
   });
 
+  const existingCells: { [key: string]: boolean } = {};
+
   while (result.length < length) {
     const tail = result[result.length - 1];
+    existingCells[`${tail.x}-${tail.y}`] = true;
+    const direction = Math.random() > 0.5 ? 1 : -1;
+    const coord = Math.random() > 0.5 ? 'x' : 'y';
+
+    let newX = tail.x;
+    let newY = tail.y;
+
+    if (coord === 'x') {
+      newX = tail.x + direction;
+      if (existingCells[`${newX}-${newY}`]) {
+        newX = tail.x - direction;
+      }
+    } else {
+      newY = tail.y + direction;
+      if (existingCells[`${newX}-${newY}`]) {
+        newY = tail.y - direction;
+      }
+    }
+
     result.push({
-      x: tail.x,
-      y: clamp(tail.y - 1, 0, height),
+      x: newX,
+      y: newY,
       type: 'snakeTail',
     });
   }
