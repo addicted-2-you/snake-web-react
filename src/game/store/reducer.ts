@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TGameSnakeCell } from '../model/game';
+import { TGameAppleCell, TGameCellCoords, TGameSnakeCell } from '../model/game';
 import { TArrowKey } from '../model/keys';
 import { getNewHead } from '../util/game';
 import { OPPOSITE_KEYS_MAP } from '../constants/keys';
@@ -8,6 +8,7 @@ interface IGameState {
   width: number;
   height: number;
   snake: TGameSnakeCell[];
+  apples: TGameAppleCell[];
   lastDirection: TArrowKey;
 }
 
@@ -15,6 +16,7 @@ const initialState: IGameState = {
   width: 16,
   height: 16,
   snake: [],
+  apples: [],
   lastDirection: 'ArrowDown',
 };
 
@@ -35,6 +37,9 @@ const gameSlice = createSlice({
       if (OPPOSITE_KEYS_MAP[action.payload] !== state.lastDirection) {
         state.lastDirection = action.payload;
       }
+    },
+    addApple: (state, action: PayloadAction<TGameCellCoords>) => {
+      state.apples[0] = { type: 'apple', ...action.payload };
     },
     addSnakeTail: (state, action: PayloadAction<TGameSnakeCell>) => {
       state.snake.push(action.payload);
@@ -89,4 +94,5 @@ export const {
   setDirection,
   addSnakeTail,
   moveSnake,
+  addApple,
 } = gameSlice.actions;

@@ -1,5 +1,5 @@
 import { getRandomIntervalInt } from '../../shared/utils/nums';
-import { TGameCellType, TGameSnakeCell } from '../model/game';
+import { TGameCellCoords, TGameCellType, TGameSnakeCell } from '../model/game';
 import { TArrowKey } from '../model/keys';
 
 export const getCellStyle = (type: TGameCellType) => {
@@ -14,6 +14,10 @@ export const getCellStyle = (type: TGameCellType) => {
 
     case 'snakeTail': {
       return 'bg-white';
+    }
+
+    case 'apple': {
+      return 'bg-red-500';
     }
 
     default: {
@@ -104,4 +108,14 @@ export const getNewHead = (head: TGameSnakeCell, direction: TArrowKey) => {
   }
 
   return newHead;
+};
+
+export const getRandomCell = (
+  width: number,
+  height: number,
+): TGameCellCoords => {
+  return {
+    x: getRandomIntervalInt(0, width),
+    y: getRandomIntervalInt(0, height),
+  };
 };

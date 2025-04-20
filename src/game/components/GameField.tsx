@@ -2,14 +2,15 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
+  selectApples,
   selectGameHeight,
   selectGameWidth,
   selectSnake,
 } from '../store/seletors';
 import { TGameCell } from '../model/game';
 import { GameCell } from './GameCell';
-import { moveSnake, setDirection, setSnake } from '../store/reducer';
-import { buildSnake } from '../util/game';
+import { addApple, moveSnake, setDirection, setSnake } from '../store/reducer';
+import { buildSnake, getRandomCell } from '../util/game';
 import { ARROW_KEYS } from '../constants/keys';
 import { TArrowKey } from '../model/keys';
 
@@ -19,6 +20,7 @@ export const GameField = () => {
   const width = useSelector(selectGameWidth);
   const height = useSelector(selectGameHeight);
   const snake = useSelector(selectSnake);
+  const apples = useSelector(selectApples);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -34,7 +36,14 @@ export const GameField = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(setSnake(buildSnake({ width, height, length: 3 })));
+    const snake = buildSnake({ width, height, length: 3 });
+    let apple = getRandomCell(width, height);
+    while (snake.find((s) => s.x === apple.x && s.y === apple.y)) {
+      apple = getRandomCell(width, height);
+    }
+
+    dispatch(setSnake(snake));
+    dispatch(addApple(apple));
   }, [dispatch, width, height]);
 
   useEffect(() => {
@@ -57,6 +66,11 @@ export const GameField = () => {
     }
 
     gameField.push(row);
+  }
+
+  for (let i = 0; i < apples.length; i += 1) {
+    const appleCell = apples[i];
+    gameField[appleCell.y][appleCell.x].type = 'apple';
   }
 
   for (let i = 0; i < snake.length; i += 1) {

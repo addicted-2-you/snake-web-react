@@ -1,5 +1,11 @@
 export type TGameSnakeCellType = 'snakeHead' | 'snakeTail';
-export type TGameCellType = 'bg' | TGameSnakeCellType;
+
+export type TGameCellType = 'bg' | 'apple' | TGameSnakeCellType;
+
+export type TGameCellCoords = {
+  x: number;
+  y: number;
+};
 
 export type TGameCell = {
   type: TGameCellType;
@@ -9,6 +15,12 @@ export type TGameCell = {
 
 export type TGameSnakeCell = {
   type: TGameSnakeCellType;
+  x: number;
+  y: number;
+};
+
+export type TGameAppleCell = {
+  type: 'apple';
   x: number;
   y: number;
 };
