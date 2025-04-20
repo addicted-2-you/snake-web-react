@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -35,6 +35,14 @@ export const GameField = () => {
   const lastDirection = useSelector(selectLastDirection);
   const snake = useSelector(selectSnake);
   const apples = useSelector(selectApples);
+
+  const style = useMemo(
+    () => ({
+      gridTemplateColumns: `repeat(${width}, 1fr)`,
+      gridTemplateRows: `grid-rows-[repeat(${height},_1fr)]`,
+    }),
+    [width, height],
+  );
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -126,13 +134,7 @@ export const GameField = () => {
   }
 
   return (
-    <div
-      style={{
-        gridTemplateColumns: `repeat(${width}, 1fr)`,
-        gridTemplateRows: `grid-rows-[repeat(${height},_1fr)]`,
-      }}
-      className="grid"
-    >
+    <div style={style} className="grid">
       {gameField.map((fieldRow, i) =>
         fieldRow.map((fr, j) => <GameCell key={`${i}-${j}`} type={fr.type} />),
       )}
