@@ -29,9 +29,31 @@ const gameSlice = createSlice({
     addSnakeTail: (state, action: PayloadAction<TGameSnakeCell>) => {
       state.snake.push(action.payload);
     },
+    moveSnake: (state) => {
+      const newSnake = [...state.snake].map((c, i) => {
+        let newX = state.snake[i - 1]?.x || c.x;
+        let newY = state.snake[i - 1]?.y || c.y + 1;
+
+        if (newX >= state.width) {
+          newX = 0;
+        }
+
+        if (newY >= state.height) {
+          newY = 0;
+        }
+
+        return {
+          x: newX,
+          y: newY,
+          type: c.type,
+        };
+      });
+
+      state.snake = newSnake;
+    },
   },
 });
 
 export const gameReducer = gameSlice.reducer;
-export const { setWidth, setHeight, setSnake, addSnakeTail } =
+export const { setWidth, setHeight, setSnake, addSnakeTail, moveSnake } =
   gameSlice.actions;

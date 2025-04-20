@@ -8,7 +8,7 @@ import {
 } from '../store/seletors';
 import { TGameCell } from '../model/game';
 import { GameCell } from './GameCell';
-import { setSnake } from '../store/reducer';
+import { moveSnake, setSnake } from '../store/reducer';
 import { buildSnake } from '../util/game';
 
 export const GameField = () => {
@@ -21,6 +21,14 @@ export const GameField = () => {
   useEffect(() => {
     dispatch(setSnake(buildSnake({ width, height, length: 3 })));
   }, [dispatch, width, height]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(moveSnake());
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [dispatch]);
 
   const gameField: TGameCell[][] = [];
   for (let i = 0; i < height; i += 1) {
