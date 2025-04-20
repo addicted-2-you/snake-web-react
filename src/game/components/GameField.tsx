@@ -9,7 +9,7 @@ import {
   selectSnake,
 } from '../store/seletors';
 import { TGameCell } from '../model/game';
-import { GameCell } from './GameCell';
+import GameCell from './GameCell';
 import {
   addApple,
   addSnakeTail,
