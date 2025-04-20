@@ -62,6 +62,13 @@ export const GameField = () => {
 
   useEffect(() => {
     const head = snake[0];
+
+    if (snake.slice(1).find((s) => areSameCells(s, head))) {
+      const snake = buildSnake({ width, height, length: 3 });
+      dispatch(setSnake(snake));
+      return;
+    }
+
     const apple = apples[0];
     if (head && apple) {
       if (areSameCells(head, apple)) {
