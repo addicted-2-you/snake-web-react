@@ -1,5 +1,14 @@
+import { GameField } from './game/components/GameField';
+
 const App = () => {
-  return <h1 className="text-red-500">Hello World</h1>;
+  return (
+    <div className="h-screen flex flex-col">
+      <h1 className="text-center font-bold">Hey</h1>
+      <div className="flex grow justify-center items-center">
+        <GameField />
+      </div>
+    </div>
+  );
 };
 
 export default App;
