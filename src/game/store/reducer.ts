@@ -54,8 +54,16 @@ const gameSlice = createSlice({
           newX = 0;
         }
 
+        if (newX < 0) {
+          newX = state.width - 1;
+        }
+
         if (newY >= state.height) {
           newY = 0;
+        }
+
+        if (newY < 0) {
+          newY = state.height - 1;
         }
 
         return {
