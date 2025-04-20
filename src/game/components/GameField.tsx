@@ -8,7 +8,7 @@ import {
 } from '../store/seletors';
 import { TGameCell } from '../model/game';
 import { GameCell } from './GameCell';
-import { moveSnake, setDiretion, setSnake } from '../store/reducer';
+import { moveSnake, setDirection, setSnake } from '../store/reducer';
 import { buildSnake } from '../util/game';
 import { ARROW_KEYS } from '../constants/keys';
 import { TArrowKey } from '../model/keys';
@@ -24,7 +24,7 @@ export const GameField = () => {
     const onKeyDown = (e: KeyboardEvent) => {
       const code = e.code as string & TArrowKey;
       if (ARROW_KEYS.includes(code)) {
-        dispatch(setDiretion(code));
+        dispatch(setDirection(code));
       }
     };
 

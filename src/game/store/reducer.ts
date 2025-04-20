@@ -30,7 +30,7 @@ const gameSlice = createSlice({
     setSnake: (state, action: PayloadAction<TGameSnakeCell[]>) => {
       state.snake = action.payload;
     },
-    setDiretion: (state, action: PayloadAction<TArrowKey>) => {
+    setDirection: (state, action: PayloadAction<TArrowKey>) => {
       state.lastDirection = action.payload;
     },
     addSnakeTail: (state, action: PayloadAction<TGameSnakeCell>) => {
@@ -83,7 +83,7 @@ export const {
   setWidth,
   setHeight,
   setSnake,
-  setDiretion,
+  setDirection,
   addSnakeTail,
   moveSnake,
 } = gameSlice.actions;
