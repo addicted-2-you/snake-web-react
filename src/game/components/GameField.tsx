@@ -5,12 +5,25 @@ import {
   selectApples,
   selectGameHeight,
   selectGameWidth,
+  selectLastDirection,
   selectSnake,
 } from '../store/seletors';
 import { TGameCell } from '../model/game';
 import { GameCell } from './GameCell';
-import { addApple, moveSnake, setDirection, setSnake } from '../store/reducer';
-import { buildSnake, getRandomCell } from '../util/game';
+import {
+  addApple,
+  addSnakeTail,
+  moveSnake,
+  setDirection,
+  setSnake,
+} from '../store/reducer';
+import {
+  areSameCells,
+  buildSnake,
+  clampCell,
+  getNewTail,
+  getRandomCell,
+} from '../util/game';
 import { ARROW_KEYS } from '../constants/keys';
 import { TArrowKey } from '../model/keys';
 
@@ -19,6 +32,7 @@ export const GameField = () => {
 
   const width = useSelector(selectGameWidth);
   const height = useSelector(selectGameHeight);
+  const lastDirection = useSelector(selectLastDirection);
   const snake = useSelector(selectSnake);
   const apples = useSelector(selectApples);
 
@@ -45,6 +59,31 @@ export const GameField = () => {
     dispatch(setSnake(snake));
     dispatch(addApple(apple));
   }, [dispatch, width, height]);
+
+  useEffect(() => {
+    const head = snake[0];
+    const apple = apples[0];
+    if (head && apple) {
+      if (areSameCells(head, apple)) {
+        const newTail = clampCell(
+          getNewTail(snake[snake.length - 1], lastDirection),
+          width,
+          height,
+        );
+
+        let newApple = getRandomCell(width, height);
+        while (
+          snake.find((s) => areSameCells(s, newApple)) &&
+          !areSameCells(newTail, newApple)
+        ) {
+          newApple = getRandomCell(width, height);
+        }
+
+        dispatch(addApple(newApple));
+        dispatch(addSnakeTail(newTail));
+      }
+    }
+  }, [dispatch, height, width, lastDirection, snake, apples]);
 
   useEffect(() => {
     const interval = setInterval(() => {

@@ -41,8 +41,8 @@ const gameSlice = createSlice({
     addApple: (state, action: PayloadAction<TGameCellCoords>) => {
       state.apples[0] = { type: 'apple', ...action.payload };
     },
-    addSnakeTail: (state, action: PayloadAction<TGameSnakeCell>) => {
-      state.snake.push(action.payload);
+    addSnakeTail: (state, action: PayloadAction<TGameCellCoords>) => {
+      state.snake.push({ type: 'snakeTail', ...action.payload });
     },
     moveSnake: (state) => {
       const newSnake = [...state.snake].map((c, i) => {

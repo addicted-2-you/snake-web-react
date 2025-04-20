@@ -110,6 +110,38 @@ export const getNewHead = (head: TGameSnakeCell, direction: TArrowKey) => {
   return newHead;
 };
 
+export const getNewTail = (tail: TGameSnakeCell, lastDirection: TArrowKey) => {
+  const newTail = { ...tail };
+
+  switch (lastDirection) {
+    case 'ArrowUp': {
+      newTail.y += 1;
+      break;
+    }
+
+    case 'ArrowRight': {
+      newTail.x -= 1;
+      break;
+    }
+
+    case 'ArrowDown': {
+      newTail.y -= 1;
+      break;
+    }
+
+    case 'ArrowLeft': {
+      newTail.x += 1;
+      break;
+    }
+
+    default: {
+      //
+    }
+  }
+
+  return newTail;
+};
+
 export const getRandomCell = (
   width: number,
   height: number,
@@ -118,4 +150,34 @@ export const getRandomCell = (
     x: getRandomIntervalInt(0, width),
     y: getRandomIntervalInt(0, height),
   };
+};
+
+export const areSameCells = (c1: TGameCellCoords, c2: TGameCellCoords) => {
+  return c1.x === c2.x && c1.y === c2.y;
+};
+
+export const clampCell = (
+  cell: TGameCellCoords,
+  width: number,
+  height: number,
+) => {
+  const newCell = { ...cell };
+
+  if (newCell.x >= width) {
+    newCell.x = 0;
+  }
+
+  if (newCell.x < 0) {
+    newCell.x = width - 1;
+  }
+
+  if (newCell.y >= height) {
+    newCell.y = 0;
+  }
+
+  if (newCell.y < 0) {
+    newCell.y = height - 1;
+  }
+
+  return newCell;
 };
