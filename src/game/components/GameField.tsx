@@ -96,7 +96,7 @@ export const GameField = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(moveSnake());
-    }, 250);
+    }, 100);
 
     return () => clearInterval(interval);
   }, [dispatch]);
