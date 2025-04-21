@@ -26,6 +26,7 @@ import {
 } from '../util/game';
 import { ARROW_KEYS } from '../constants/keys';
 import { TArrowKey } from '../model/keys';
+import { reverseDivmod } from '../../shared/utils/nums';
 
 export const GameField = () => {
   const dispatch = useDispatch();
@@ -108,36 +109,36 @@ export const GameField = () => {
     return () => clearInterval(interval);
   }, [dispatch]);
 
-  const gameField: TGameCell[][] = [];
+  const gameField: TGameCell[] = [];
   for (let i = 0; i < height; i += 1) {
-    const row: TGameCell[] = [];
     for (let j = 0; j < width; j += 1) {
-      row.push({
+      gameField.push({
         x: j,
         y: i,
         type: 'bg',
       });
     }
-
-    gameField.push(row);
   }
 
   for (let i = 0; i < apples.length; i += 1) {
     const appleCell = apples[i];
-    gameField[appleCell.y][appleCell.x].type = 'apple';
+    const gfi = reverseDivmod(appleCell.y, appleCell.x, width);
+    gameField[gfi].type = 'apple';
   }
 
   for (let i = 0; i < snake.length; i += 1) {
     const snakeCell = snake[i];
-    gameField[snakeCell.y][snakeCell.x].type =
-      i === 0 ? 'snakeHead' : 'snakeTail';
+    const gfi = reverseDivmod(snakeCell.y, snakeCell.x, width);
+    gameField[gfi].type = i === 0 ? 'snakeHead' : 'snakeTail';
   }
 
   return (
     <div style={style} className="grid">
-      {gameField.map((fieldRow, i) =>
-        fieldRow.map((fr, j) => <GameCell key={`${i}-${j}`} type={fr.type} />),
-      )}
+      {gameField.map((fr) => (
+        <div key={`${fr.x}-${fr.y}`}>
+          <GameCell key={`${fr.x}-${fr.y}`} type={fr.type} />
+        </div>
+      ))}
     </div>
   );
 };
