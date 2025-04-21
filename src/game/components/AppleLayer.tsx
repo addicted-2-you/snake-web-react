@@ -16,7 +16,7 @@ const AppleLayer = ({ wCells, hCells }: Props) => {
   return (
     <GameLayer wCells={wCells} hCells={hCells} zIndex={10}>
       {apples.map((a) => (
-        <div key={`${a.x}-${a.y}-${a.type}`} style={a.style}>
+        <div key={a.id} style={a.style}>
           <GameCell type={a.type} />
         </div>
       ))}

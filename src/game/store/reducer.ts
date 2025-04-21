@@ -3,6 +3,7 @@ import { TGameAppleCell, TGameCellCoords, TGameSnakeCell } from '../model/game';
 import { TArrowKey } from '../model/keys';
 import { getNewHead } from '../util/game';
 import { OPPOSITE_KEYS_MAP } from '../constants/keys';
+import { generateUUID } from '../../shared/utils/strings';
 
 interface IGameState {
   width: number;
@@ -39,10 +40,18 @@ const gameSlice = createSlice({
       }
     },
     addApple: (state, action: PayloadAction<TGameCellCoords>) => {
-      state.apples[0] = { type: 'apple', ...action.payload };
+      state.apples[0] = {
+        ...action.payload,
+        type: 'apple',
+        id: generateUUID(),
+      };
     },
     addSnakeTail: (state, action: PayloadAction<TGameCellCoords>) => {
-      state.snake.push({ type: 'snakeTail', ...action.payload });
+      state.snake.push({
+        ...action.payload,
+        type: 'snakeTail',
+        id: generateUUID(),
+      });
     },
     moveSnake: (state) => {
       const newSnake = [...state.snake].map((c, i) => {
@@ -75,6 +84,7 @@ const gameSlice = createSlice({
         }
 
         return {
+          id: c.id,
           x: newX,
           y: newY,
           type: c.type,

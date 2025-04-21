@@ -1,4 +1,5 @@
 import { getRandomIntervalInt } from '../../shared/utils/nums';
+import { generateUUID } from '../../shared/utils/strings';
 import { TGameCellCoords, TGameCellType, TGameSnakeCell } from '../model/game';
 import { TArrowKey } from '../model/keys';
 
@@ -40,6 +41,7 @@ export const buildSnake = ({
   const result: TGameSnakeCell[] = [];
 
   result.push({
+    id: generateUUID(),
     x: getRandomIntervalInt(0, width),
     y: getRandomIntervalInt(0, height),
     type: 'snakeHead',
@@ -69,6 +71,7 @@ export const buildSnake = ({
     }
 
     result.push({
+      id: generateUUID(),
       x: newX,
       y: newY,
       type: 'snakeTail',
@@ -110,8 +113,8 @@ export const getNewHead = (head: TGameSnakeCell, direction: TArrowKey) => {
   return newHead;
 };
 
-export const getNewTail = (tail: TGameSnakeCell, lastDirection: TArrowKey) => {
-  const newTail = { ...tail };
+export const getNewTail = (tail: TGameCellCoords, lastDirection: TArrowKey) => {
+  const newTail: TGameCellCoords = { x: tail.x, y: tail.y };
 
   switch (lastDirection) {
     case 'ArrowUp': {

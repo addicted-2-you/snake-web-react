@@ -1,26 +1,17 @@
 export type TGameSnakeCellType = 'snakeHead' | 'snakeTail';
-
 export type TGameCellType = 'bg' | 'apple' | TGameSnakeCellType;
 
-export type TGameCellCoords = {
+type TCellBase<T extends TGameCellType> = {
+  type: T;
+  id: string;
   x: number;
   y: number;
 };
 
-export type TGameCell = {
-  type: TGameCellType;
-  x: number;
-  y: number;
-};
+export type TGameSnakeCell = TCellBase<TGameSnakeCellType>;
+export type TGameAppleCell = TCellBase<'apple'>;
+export type TGameBgCell = TCellBase<'bg'>;
 
-export type TGameSnakeCell = {
-  type: TGameSnakeCellType;
-  x: number;
-  y: number;
-};
+export type TGameCell = TGameSnakeCell | TGameAppleCell | TGameBgCell;
 
-export type TGameAppleCell = {
-  type: 'apple';
-  x: number;
-  y: number;
-};
+export type TGameCellCoords = Pick<TGameCell, 'x' | 'y'>;

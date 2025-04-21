@@ -16,7 +16,7 @@ const SnakeLayer = ({ wCells, hCells }: Props) => {
   return (
     <GameLayer wCells={wCells} hCells={hCells} zIndex={20}>
       {snake.map((s) => (
-        <div key={`${s.x}-${s.y}-${s.type}`} style={s.style}>
+        <div key={s.id} style={s.style}>
           <GameCell type={s.type} />
         </div>
       ))}
