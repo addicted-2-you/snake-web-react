@@ -181,3 +181,10 @@ export const clampCell = (
 
   return newCell;
 };
+
+export const getCellGridCss = (c: TGameCellCoords) => ({
+  gridColumnStart: c.x + 1,
+  gridColumnEnd: c.x + 1,
+  gridRowStart: c.y + 1,
+  gridRowEnd: c.y + 1,
+});
